@@ -4,6 +4,11 @@ import os
 import PIL
 from PIL import Image
 import tensorflow as tf
+# from tensorflow.keras import layers
+# from tensorflow.keras import regularizers
+import tensorflow_docs as tfdocs
+import tensorflow_docs.modeling
+import tensorflow_docs.plots
 import pathlib
 import time
 import matplotlib.pyplot as plt
@@ -20,9 +25,9 @@ archive = tf.keras.utils.get_file(origin=dataset_url, extract=True)
 data_dir = pathlib.Path(archive).with_suffix('')
 
 # lists all the items with the .jpg extension from data dir and puts them in list to count
-#image_count = len(list(data_dir.glob('*/*.jpg')))
+# image_count = len(list(data_dir.glob('*/*.jpg')))
 
-#print(image_count)
+# print(image_count)
 
 '''
 roses = list(data_dir.glob('roses/*'))
@@ -54,8 +59,8 @@ val_ds = tf.keras.utils.image_dataset_from_directory(
     batch_size=batch_size,
 )
 
-#class_names = train_ds.class_names
-#print(class_names)
+# class_names = train_ds.class_names
+# print(class_names)
 
 '''Normalize the data'''
 
@@ -88,7 +93,7 @@ num_classes = 5
 
 # convolutional neural network (CNN)
 model = tf.keras.Sequential([
-    tf.keras.layers.Rescaling(1./255),
+    tf.keras.layers.Rescaling(1. / 255),
     tf.keras.layers.Conv2D(32, 3, activation='relu'),
     tf.keras.layers.MaxPooling2D(),
     tf.keras.layers.Conv2D(32, 3, activation='relu'),
@@ -111,10 +116,11 @@ MaxPooling is a downSampling operation
 It reduces the spatial dimension of the data
 '''
 
-
+# different optimizers: Adam, SGD,AdamW, RMSprop, Adadelta, Adagrad, Adamax, Adafactor, Nadam,
+# Ftrl, Lion, Loss Scale Optimizer
 model.compile(
-    optimizer= 'adam',
-    loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+    optimizer='Adamax',
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
     metrics=['accuracy']
 )
 
@@ -126,4 +132,7 @@ model.fit(
 
 end_time = time.time()
 elapsed_time = end_time - start_time
-print("Elapsed time is: ", elapsed_time, "seconds")
+elapsed_minute = int(elapsed_time // 60)
+elapsed_second = int(elapsed_time % 60)
+
+print("Elapsed time is: ", elapsed_minute, "minute(s) and ", elapsed_second, "seconds")
